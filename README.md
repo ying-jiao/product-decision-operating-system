@@ -1,51 +1,109 @@
 # Product Decision OS
 
-A versioned, human-in-the-loop workflow for making consequential product decisions with AI without losing context, mixing assumptions with facts, or allowing downstream work to depend silently on outdated reasoning.
+**Turn an ambiguous product problem into a decision you can explain, test, and revisit—with AI as your thinking partner.**
 
-Product Decision OS is not a prioritization framework or an autonomous product manager. It is a lightweight operating system for moving from an ambiguous product brief to a defensible decision and clear communication artifact.
+Product Decision OS is a seven-stage workflow for product managers, founders, and teams. It helps you define the decision, understand the evidence, diagnose the problem, compare approaches, choose what to build first, and decide what success would look like. You review and approve each stage before the next one uses it.
 
-## What it preserves
+You start with a product question, available evidence, and constraints. You finish with a recommendation, its strongest alternative, a concrete first move, a validation plan, and a memo or presentation your team can act on.
 
-- one canonical source of truth;
-- explicit module dependencies;
-- versioned approvals and status tracking;
-- automatic stale-state propagation;
-- targeted reruns and explicit waivers;
-- evidence, inference, and hypothesis separation;
-- human approval between major decisions;
-- fail-closed behavior when state cannot be verified;
-- separation between internal reasoning and audience-facing communication.
+**[How it works](#how-it-solves-a-product-problem) · [Why use it](#what-makes-this-workflow-useful) · [Get started](#start-here-run-your-first-product-decision) · [Worked example](examples/ai-feature-launch/README.md)**
 
-## Workflow
+## The problem it helps solve
+
+“Should we launch this feature?” usually contains several unanswered questions: Who needs it? What is preventing a better outcome? Does the evidence support our explanation? What else could we do? How would we know our choice worked?
+
+Those questions are easy to skip when an AI assistant can produce a convincing recommendation immediately. They are also easy to lose across long conversations: assumptions become facts, earlier decisions disappear, and an updated analysis never reaches the final plan.
+
+Product Decision OS gives each question a place in the process and keeps a record of what you approved. The final recommendation remains connected to the evidence and judgments behind it.
+
+## What you get
+
+- **A clearly framed decision:** the user, desired outcome, metric, scope, and constraints.
+- **An evidence-backed explanation:** what is happening, what may explain it, and what remains uncertain.
+- **A real choice:** a recommended approach, a credible runner-up, and the benefit you are choosing to give up.
+- **A testable execution plan:** MVP scope, NOW / NEXT / NOT DOING, success measures, guardrails, and actions to take when results arrive.
+- **A communication artifact:** a decision memo, roadmap recommendation, PRD direction, experiment brief, or executive presentation.
+- **A decision record:** approved versions, source references, unresolved risks, and conditions that would change your mind.
+
+This repository contains Markdown instructions, prompts, templates, a quality rubric, and a fictional example. It is a workflow kit: your assistant and connected storage carry out its commands. There is no application to install, and GitHub itself does not execute the workflow.
+
+## How it solves a product problem
+
+Each stage answers one question and produces the input for the next. The starting point is a **PRODUCT BRIEF** containing your question, context, evidence, and constraints.
+
+| Stage | Question | What you review before moving on |
+|---|---|---|
+| **1. [FRAME](modules/01_FRAME.md)** | What decision are we making, and for whom? | Objective, primary outcome metric, user, scope, constraints, and assumptions. |
+| **2. [ANALYZE](modules/02_ANALYZE.md)** | What does the evidence actually establish? | Calculations, relevant segments, qualitative findings, contradictions, and missing data. |
+| **3. [DIAGNOSE](modules/03_DIAGNOSE.md)** | What problem should we solve? | Leading explanation, competing explanations, confidence, and evidence that would disprove it. |
+| **4. [SOLUTIONS + DECIDE](modules/04_SOLUTIONS_DECIDE.md)** | Which approach should come first? | Distinct alternatives, comparison criteria, chosen approach, strongest alternative, and trade-off. |
+| **5. [EXECUTION + VALIDATE](modules/05_EXECUTION_VALIDATE.md)** | What do we build first, and how will we learn? | Product mechanism, MVP, sequencing, metrics, guardrails, and decision rules. |
+| **6. [CRITIQUE + RECONCILE](modules/06_CRITIQUE_RECONCILE.md)** | Does the recommendation survive a serious challenge? | Weak claims, necessary revisions, targeted reruns, and explicitly accepted risks. |
+| **7. [COMMUNICATE](modules/07_COMMUNICATE.md)** | How do we help others understand and act? | A recommendation-first artifact, supporting evidence, and DECISION DEFENSE. |
+
+The review loop is the same at every stage:
 
 ```text
-PRODUCT BRIEF
-    ↓
-FRAME
-    ↓
-ANALYZE
-    ↓
-DIAGNOSE
-    ↓
-SOLUTIONS + DECIDE
-    ↓
-EXECUTION + VALIDATE
-    ↓
-CRITIQUE + RECONCILE
-    ↓
-COMMUNICATE
+Run one stage → Review the draft → Request revisions → Approve → Continue
 ```
 
-The modules solve bottom-up but communicate top-down:
+### A concrete example: should we build an AI insight summary?
 
-```text
-Internal: Evidence → Interpretation → Diagnosis → Options → Decision → Execution → Validation
-External: Recommendation → Reasons → Evidence → Trade-off → Plan → Decision rules
-```
+Imagine a product team whose customers spend time comparing dashboards but still struggle to decide what to do next. The team is considering an AI-generated weekly summary.
+
+1. **Frame:** Decide whether to invest a quarter in a constrained MVP. Define the desired outcome as useful customer action, rather than summary views.
+2. **Analyze:** Examine usage data, research, and support feedback. Separate evidence of interpretation difficulty from evidence of actual follow-up behavior.
+3. **Diagnose:** Test whether the main problem is interpreting scattered information. Keep a competing explanation visible: users may understand the data but lack the authority to act.
+4. **Choose:** Compare AI summaries, fixed-rule alerts, and analyst-led guidance. Explain why one comes first and what the runner-up does better.
+5. **Plan and validate:** Define a limited MVP with source citations, a target segment, action signals, and quality guardrails. Specify when to expand, iterate, or stop.
+6. **Challenge:** Check whether the team can actually measure follow-up actions. If instrumentation is inadequate, revisit the validation plan before relying on its results.
+7. **Communicate:** Present the recommendation, evidence limits, trade-off, MVP, and reversal conditions in one coherent story.
+
+This is an illustrative path, not evidence that AI summaries are the right answer. [Read the full fictional example →](examples/ai-feature-launch/README.md)
+
+## What makes this workflow useful
+
+### One shared record keeps the work connected
+
+The **canonical state** is a document or file holding the product brief, complete approved outputs, versions, and open issues. Every stage reads this record. You can change conversations or collaborators without manually reconstructing the decision from chat history.
+
+### Your approval controls what becomes an input
+
+`RUN` produces a draft. You challenge it, request changes, and explicitly `APPROVE` it. Only then can downstream stages use it. The assistant records the exact versions used and reads back each saved change before claiming success.
+
+### Changed evidence makes outdated work visible
+
+Suppose a corrected denominator changes the analysis. Approving `ANALYZE v2` marks existing diagnosis, solution, execution, critique, and communication outputs `STALE`. They must be reviewed again against the updated evidence. An old presentation cannot silently remain the current answer.
+
+These are operating rules the assistant must follow; this repository does not include a background service that enforces them.
+
+### Evidence and uncertainty stay distinguishable
+
+Facts, calculations, estimates, assumptions, inferences, and hypotheses have separate labels. The workflow asks what evidence does **not** establish, what else could explain the pattern, and what would change the diagnosis. Missing data stays missing.
+
+### A recommendation includes a meaningful sacrifice
+
+The decision must name the strongest alternative, what it does better, and why it still loses. Execution then connects the chosen approach to user behavior and a business outcome, with distinct responses to implementation problems, solution failure, and a wrong diagnosis.
+
+### Critique leads to a specific next action
+
+Findings receive stable IDs and route back to the earliest stage that can correct them. You can explicitly accept an unresolved concern through a **waiver**; its severity and residual risk remain visible. Unverifiable state or missing required inputs stop the workflow instead of inviting guesses.
+
+### Deep review becomes clear communication
+
+Each draft includes an **EXECUTIVE VIEW** for the central argument and a **FULL REVIEW** for inspecting evidence and reasoning. The complete approved output is saved. Final communication reorganizes it around the audience's decision, with a **DECISION DEFENSE** covering likely questions, evidence, and limitations.
+
+## When to use it
+
+Use the workflow when the cost of a weak decision warrants deliberate review: prioritizing a feature, diagnosing an activation or retention problem, choosing a product strategy, evaluating pricing or packaging, or planning an AI product launch.
+
+It works best when a person owns the decision, relevant evidence is accessible, and the team can act on what it learns. Scale the depth of each stage to the stakes. A small, easily reversible choice may need only a lightweight discussion.
 
 ## Start here: run your first product decision
 
-You need an AI assistant that can read and write the canonical state location you choose. The workflow will stop rather than rely on conversational memory when that state is unavailable.
+Download or clone this repository and make its instructions available to your assistant. The assistant needs to read the `core/` rules and relevant module files, access your evidence, and read and write your chosen state document. The workflow stops when required state cannot be verified.
+
+Keep real customer data, internal research, and approved decision records in an appropriately private workspace; this public repository provides reusable templates.
 
 ### Step 1 — Create the canonical state
 
@@ -85,9 +143,13 @@ Confirm initialization with:
 STATUS
 ```
 
+Initialize once for a new decision. To resume existing work, use `STATUS` or `WHAT NEXT?`; initialization clears active module outputs.
+
 ### Step 4 — Run and approve each module
 
 Use [`prompts/module-bootstrap.md`](prompts/module-bootstrap.md) with the relevant module SOP. Run the modules in this order:
+
+For the first run, replace the prompt's placeholders with `FRAME`, `modules/01_FRAME.md`, and your canonical-state location. Update the module and SOP for each later run. You can use one conversation or separate module conversations; all must read the same canonical state.
 
 | Order | Draft command | SOP | Approval command |
 |---:|---|---|---|
@@ -112,6 +174,8 @@ RUN module
 ```
 
 `RUN` creates a draft and must not overwrite canonical approved work. `APPROVE` stores the complete reviewed output, increments that module's version, records its exact upstream basis, and verifies the write. Approval must never be inferred from silence.
+
+Send each approval only after reviewing that stage's output. If using separate conversations, perform approval in the one that has the complete reviewed draft and write access to the shared state. The assistant retrieves approved upstream work from that record; you do not need to paste earlier outputs or remember their versions.
 
 For `COMMUNICATE`, approval sets the artifact to `FINAL` rather than merely `APPROVED`.
 
@@ -143,6 +207,8 @@ To follow the recommended reruns:
 ACCEPT RERUNS
 ```
 
+Then run and approve the affected stages in dependency order. Accepting a rerun plan does not automatically execute or approve those stages.
+
 To accept a known residual risk without rerunning:
 
 ```text
@@ -157,11 +223,22 @@ WAIVE ALL AND PROCEED
 
 A waiver removes the workflow block; it does not resolve the concern. The original finding and severity remain in canonical state and must appear as residual risk in later work.
 
+A waiver cannot make unavailable state or unverified evidence valid, or make an already stale dependency current.
+
 ### Step 7 — Produce the final artifact
 
 Run COMMUNICATE only after every required upstream module is current and approved and every rerun directive is completed or explicitly waived.
 
 Choose the artifact that fits the decision: a decision memo, PRD direction, roadmap recommendation, experiment brief, or executive presentation. The final artifact should lead with the recommendation and hide the internal module structure.
+
+For example:
+
+```text
+RUN COMMUNICATE
+Create a decision memo for the product and engineering leads.
+Make the recommendation, strongest alternative, trade-off, MVP,
+validation plan, and unresolved risks easy to find.
+```
 
 After review, send:
 
@@ -225,10 +302,6 @@ WAIVE ALL AND PROCEED
 5. When an approved input changes, every existing dependent output becomes `STALE`.
 6. A waiver removes a workflow block; it does not resolve the underlying concern.
 7. If canonical state, required inputs, or version consistency cannot be verified, stop rather than guess.
-
-## Scope
-
-Use Product Decision OS for product strategy, roadmap choices, new feature bets, growth problems, retention issues, platform investments, pricing and packaging decisions, marketplace design, or AI product launches. Right-size the depth to the decision. Small reversible choices should not require heavyweight ceremony.
 
 ## License
 
