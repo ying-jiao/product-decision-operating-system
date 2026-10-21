@@ -1,4 +1,4 @@
-# Product Decision OS
+# Product Decision Operating System
 
 **Turn an ambiguous product problem into a decision you can explain, test, and revisit—with AI as your thinking partner.**
 
